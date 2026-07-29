@@ -23,7 +23,8 @@ export default function Header() {
       className="site-header"
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 300, display: 'flex', alignItems: 'center',
-        justifyContent: 'space-between', padding: 'clamp(16px,2.2vw,26px) clamp(20px,5vw,60px)', color: '#F4F1EC'
+        justifyContent: 'space-between', padding: 'clamp(16px,2.2vw,26px) clamp(20px,5vw,60px)', color: '#F4F1EC',
+        backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)'
       }}
     >
       <a

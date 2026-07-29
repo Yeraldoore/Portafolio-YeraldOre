@@ -193,7 +193,12 @@ export default function SceneEngine() {
       const bgEl = getEngineRef('bg');
       if (bgEl) bgEl.style.backgroundColor = bg;
       const headerEl = getEngineRef('header');
-      if (headerEl) headerEl.style.color = headFg;
+      if (headerEl) {
+        headerEl.style.color = headFg;
+        headerEl.style.background = `linear-gradient(to bottom,${bg.replace('rgb(', 'rgba(').replace(')', ',.72)')} 0%,${bg
+          .replace('rgb(', 'rgba(')
+          .replace(')', ',.42)')} 65%,${bg.replace('rgb(', 'rgba(').replace(')', ',0)')} 100%)`;
+      }
       const bokehEl = getEngineRef('bokeh');
       if (bokehEl) {
         const n = (bg.match(/\d+/g) || [10, 10, 10]).map(Number);
