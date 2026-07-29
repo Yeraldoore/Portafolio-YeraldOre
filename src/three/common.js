@@ -30,17 +30,17 @@ export function disposeRenderer(renderer) {
 }
 
 export function cineCameraLights(scene, accent) {
-  scene.add(new THREE.AmbientLight(0xffffff, 0.3));
-  const key = new THREE.DirectionalLight(0xfff4e6, 1.45);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+  const key = new THREE.DirectionalLight(0xfff4e6, 1.9);
   key.position.set(3.4, 4.2, 5);
   scene.add(key);
-  const rim = new THREE.PointLight(new THREE.Color(accent), 14, 20, 2);
+  const rim = new THREE.PointLight(new THREE.Color(accent), 16, 20, 2);
   rim.position.set(-3.6, 2.2, -2.6);
   scene.add(rim);
-  const fill = new THREE.PointLight(0x88a8ff, 5.5, 18, 2);
+  const fill = new THREE.PointLight(0x88a8ff, 7.5, 18, 2);
   fill.position.set(3.6, -1.4, 2.4);
   scene.add(fill);
-  const top = new THREE.SpotLight(0xffffff, 6, 24, 0.7, 0.6, 2);
+  const top = new THREE.SpotLight(0xffffff, 8, 24, 0.7, 0.6, 2);
   top.position.set(0, 6, 2.5);
   scene.add(top);
 }

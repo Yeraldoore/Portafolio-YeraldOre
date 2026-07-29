@@ -8,8 +8,8 @@ import { cineCameraLights } from './common';
 export function buildIntroCamera(scene, accentColor) {
   cineCameraLights(scene, accentColor);
   const acc = new THREE.Color(accentColor);
-  const metal = new THREE.MeshStandardMaterial({ color: 0x232326, metalness: 0.92, roughness: 0.32 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x0d0d0f, metalness: 0.55, roughness: 0.55 });
+  const metal = new THREE.MeshStandardMaterial({ color: 0x38383e, metalness: 0.85, roughness: 0.34 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x222226, metalness: 0.5, roughness: 0.55 });
   const gold = new THREE.MeshStandardMaterial({ color: acc, metalness: 1, roughness: 0.22 });
   const glass = new THREE.MeshStandardMaterial({ color: 0x0a1216, metalness: 1, roughness: 0.06, emissive: acc, emissiveIntensity: 0.22 });
 

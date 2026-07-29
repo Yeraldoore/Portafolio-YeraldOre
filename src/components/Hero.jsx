@@ -25,9 +25,9 @@ export default function Hero() {
   return (
     <section
       id="hero"
+      className="hero-grid"
       style={{
-        position: 'relative', minHeight: '100svh', display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,330px),1fr))', alignItems: 'center',
+        position: 'relative', minHeight: '100svh', display: 'grid', alignItems: 'center',
         gap: 'clamp(20px,3vw,50px)', padding: 'clamp(110px,15vh,180px) clamp(20px,5vw,60px) 0', color: '#F4F1EC'
       }}
     >
@@ -77,7 +77,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'min(78svh,720px)', paddingLeft: 'clamp(0px,5vw,96px)' }}>
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'min(78svh,720px)' }}>
         <div
           style={{
             position: 'absolute', width: '78%', aspectRatio: '1/1', borderRadius: '50%',
