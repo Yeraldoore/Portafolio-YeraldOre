@@ -30,33 +30,38 @@ export function disposeRenderer(renderer) {
 }
 
 export function cineCameraLights(scene, accent) {
-  scene.add(new THREE.AmbientLight(0xffffff, 0.65));
-  const key = new THREE.DirectionalLight(0xfff4e6, 1.9);
+  scene.add(new THREE.AmbientLight(0xffffff, 1.05));
+  scene.add(new THREE.HemisphereLight(0xe8edf8, 0x2a221a, 0.7));
+  const key = new THREE.DirectionalLight(0xfff4e6, 2.3);
   key.position.set(3.4, 4.2, 5);
   scene.add(key);
-  const rim = new THREE.PointLight(new THREE.Color(accent), 16, 20, 2);
+  const back = new THREE.DirectionalLight(0xffffff, 1.1);
+  back.position.set(-2.6, 1.6, -4);
+  scene.add(back);
+  const rim = new THREE.PointLight(new THREE.Color(accent), 18, 20, 2);
   rim.position.set(-3.6, 2.2, -2.6);
   scene.add(rim);
-  const fill = new THREE.PointLight(0x88a8ff, 7.5, 18, 2);
+  const fill = new THREE.PointLight(0x88a8ff, 9, 18, 2);
   fill.position.set(3.6, -1.4, 2.4);
   scene.add(fill);
-  const top = new THREE.SpotLight(0xffffff, 8, 24, 0.7, 0.6, 2);
+  const top = new THREE.SpotLight(0xffffff, 10, 24, 0.7, 0.6, 2);
   top.position.set(0, 6, 2.5);
   scene.add(top);
 }
 
 export function avatarLights(scene, accent) {
-  scene.add(new THREE.HemisphereLight(0xcfd8e8, 0x0e0a08, 0.5));
-  const key = new THREE.DirectionalLight(0xffeedd, 0.95);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  scene.add(new THREE.HemisphereLight(0xe8edf8, 0x241c16, 0.85));
+  const key = new THREE.DirectionalLight(0xffeedd, 1.7);
   key.position.set(2.4, 2.6, 4.6);
   scene.add(key);
-  const side = new THREE.DirectionalLight(0xffffff, 0.3);
+  const side = new THREE.DirectionalLight(0xffffff, 0.65);
   side.position.set(-3.2, 1.2, 2.2);
   scene.add(side);
-  const rim = new THREE.PointLight(new THREE.Color(accent), 5.5, 15, 2);
+  const rim = new THREE.PointLight(new THREE.Color(accent), 7, 15, 2);
   rim.position.set(-2.6, 1.9, -2.2);
   scene.add(rim);
-  const rim2 = new THREE.PointLight(0x6f8cff, 2.6, 14, 2);
+  const rim2 = new THREE.PointLight(0x6f8cff, 4, 14, 2);
   rim2.position.set(2.9, 0.6, -2);
   scene.add(rim2);
 }

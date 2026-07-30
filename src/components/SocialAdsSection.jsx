@@ -42,21 +42,25 @@ export default function SocialAdsSection() {
       >
         <div ref={bindEngineRef('car')} style={{ position: 'absolute', left: '50%', top: '50%', width: 0, height: 0, transformStyle: 'preserve-3d', willChange: 'transform', opacity: 0 }}>
           {ring.map((v, i) => (
-            <VideoCard
+            <div
               key={`${v.id}-${i}`}
-              video={v}
-              aspect="9/16"
-              radius={14}
-              frameInset={10}
-              frameRadius={8}
-              portrait
-              reveal={false}
-              glowVariant="halo"
-              className="ring-card"
               data-ringcard={v.angle}
-              onBeforeOpen={() => engineState.dragMoved <= 6}
-              style={{ position: 'absolute', left: 0, top: 0, width: 'clamp(140px,min(15vw,26svh),240px)', border: '1px solid rgba(255,255,255,.1)', backfaceVisibility: 'hidden', boxShadow: '0 34px 80px rgba(0,0,0,.55)', transform: v.transform }}
-            />
+              style={{ position: 'absolute', left: 0, top: 0, width: 'clamp(140px,min(15vw,26svh),240px)', backfaceVisibility: 'hidden', transform: v.transform }}
+            >
+              <VideoCard
+                video={v}
+                aspect="9/16"
+                radius={14}
+                frameInset={10}
+                frameRadius={8}
+                portrait
+                reveal={false}
+                glowVariant="halo"
+                className="ring-card"
+                onBeforeOpen={() => engineState.dragMoved <= 6}
+                style={{ width: '100%', border: '1px solid rgba(255,255,255,.1)', boxShadow: '0 34px 80px rgba(0,0,0,.55)' }}
+              />
+            </div>
           ))}
         </div>
       </div>

@@ -22,7 +22,7 @@ export default function Avatar3D({ outerRef }) {
     if (!wrap) return undefined;
 
     const { scene, camera, group, state, frame } = createAvatarScene(ACCENT);
-    const renderer = createRenderer(wrap, 0.95);
+    const renderer = createRenderer(wrap, 1.35);
     fitRenderer(renderer, camera, wrap);
     frame();
 
