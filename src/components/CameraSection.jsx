@@ -45,7 +45,7 @@ function Gear3DBand() {
     if (!wrap || !mount) return undefined;
 
     const { scene, camera, items } = createGearScene(ACCENT);
-    const renderer = createRenderer(mount, 1.02);
+    const renderer = createRenderer(mount, 1.35);
     fitRenderer(renderer, camera, mount);
     setLabels(frameGear(camera, items));
 

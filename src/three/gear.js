@@ -6,9 +6,9 @@ import * as THREE from 'three';
 // loop can spin them independently.
 export function createGearScene(accentColor) {
   const A = new THREE.Color(accentColor);
-  const body = new THREE.MeshStandardMaterial({ color: 0x1b1b1f, metalness: 0.86, roughness: 0.34 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x0c0c0e, metalness: 0.5, roughness: 0.6 });
-  const gold = new THREE.MeshStandardMaterial({ color: A, metalness: 1, roughness: 0.2 });
+  const body = new THREE.MeshStandardMaterial({ color: 0x38383e, metalness: 0.4, roughness: 0.42 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x2a2a2e, metalness: 0.28, roughness: 0.6 });
+  const gold = new THREE.MeshStandardMaterial({ color: A, metalness: 0.8, roughness: 0.24 });
   const glass = new THREE.MeshStandardMaterial({ color: 0x0a1216, metalness: 1, roughness: 0.05, emissive: A, emissiveIntensity: 0.2 });
   const soft = new THREE.MeshStandardMaterial({ color: 0xf6f1e6, emissive: 0xfff6e4, emissiveIntensity: 0.85, roughness: 0.9 });
 
@@ -129,14 +129,18 @@ export function createGearScene(accentColor) {
   rig.userData.spin = 0.26;
 
   const scene = new THREE.Scene();
-  scene.add(new THREE.HemisphereLight(0xcfd8e8, 0x0b0a09, 0.5));
-  const key = new THREE.DirectionalLight(0xfff4e6, 1.5);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  scene.add(new THREE.HemisphereLight(0xe8edf8, 0x241c16, 0.85));
+  const key = new THREE.DirectionalLight(0xfff4e6, 2.1);
   key.position.set(2.6, 3.4, 5);
   scene.add(key);
-  const rimL = new THREE.PointLight(A, 12, 20, 2);
+  const back = new THREE.DirectionalLight(0xffffff, 0.9);
+  back.position.set(-2.4, 1.4, -3.6);
+  scene.add(back);
+  const rimL = new THREE.PointLight(A, 14, 20, 2);
   rimL.position.set(-4.2, 1.8, -2.4);
   scene.add(rimL);
-  const rimR = new THREE.PointLight(0x6f8cff, 7, 20, 2);
+  const rimR = new THREE.PointLight(0x6f8cff, 8.5, 20, 2);
   rimR.position.set(4.4, -1, 2.6);
   scene.add(rimR);
 

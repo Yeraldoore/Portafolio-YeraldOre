@@ -28,7 +28,7 @@ export default function Loader({ onDone }) {
       camera.position.set(0, 0.55, 7.4);
       camera.lookAt(0, 0, 0);
       const group = buildIntroCamera(scene, ACCENT);
-      renderer = createRenderer(wrap, 1.5);
+      renderer = createRenderer(wrap, 1.75);
       fitRenderer(renderer, camera, wrap);
 
       let t0 = performance.now();
