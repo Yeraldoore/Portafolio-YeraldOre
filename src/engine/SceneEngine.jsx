@@ -72,7 +72,7 @@ export default function SceneEngine() {
     }
 
     const onResize = () => {
-      s.ringR = window.innerWidth < 900 ? 280 : 520;
+      s.ringR = window.innerWidth < 900 ? 470 : 730;
     };
     window.addEventListener('resize', onResize);
 
@@ -106,15 +106,31 @@ export default function SceneEngine() {
       car.style.transform = `translateZ(${z}px) rotateX(${tilt}deg) rotateY(${s.ringRot}deg)`;
       if (!s.ringCards || s.ringCards.length !== car.children.length) {
         s.ringCards = Array.prototype.slice.call(car.children);
+        // Scratch objects reused every frame so the depth sort allocates nothing.
+        s.ringDepth = s.ringCards.map(() => ({ el: null, c: 0 }));
       }
-      s.ringCards.forEach((el) => {
+      s.ringCards.forEach((el, i) => {
         const base = parseFloat(el.getAttribute('data-ringcard') || '0');
         const c = Math.cos(((base + s.ringRot) * Math.PI) / 180);
         const f = Math.max(0, c);
         el.style.opacity = String(0.08 + Math.pow(f, 0.55) * 0.92);
         el.style.filter = `brightness(${0.42 + f * 0.58})`;
         el.style.pointerEvents = c > 0.3 ? 'auto' : 'none';
+        const d = s.ringDepth[i];
+        d.el = el;
+        d.c = c;
       });
+      // The per-card opacity/filter above each spawn a stacking context, which
+      // takes these cards out of the browser's native 3D depth sorting. Paint
+      // order therefore has to be stated explicitly — and in this same tick, so
+      // it can never lag a frame behind the dimming it has to agree with.
+      // `c` is already the card's depth along the view axis: -1 far, +1 near.
+      s.ringDepth.sort((a, b) => a.c - b.c);
+      for (let i = 0; i < s.ringDepth.length; i++) {
+        const z = String(i + 1);
+        const el = s.ringDepth[i].el;
+        if (el.style.zIndex !== z) el.style.zIndex = z;
+      }
     }
 
     function applyMus() {

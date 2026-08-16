@@ -10,7 +10,13 @@ import { ACCENT, buildSocialRing } from '../data/content';
 // itself as the section scrolls into view.
 export default function SocialAdsSection() {
   const { isMobile } = useBreakpoints();
-  const radius = isMobile ? 280 : 520;
+  // Ring radius must keep neighbouring cards from overlapping: the gap between
+  // card centres is 2*R*sin(180/n), so R has to be at least maxCardWidth /
+  // (2*sin(180/n)). With n=16 that is 697px for the 272px desktop cap and 410px
+  // for the 160px mobile floor — these carry a margin on top. Keep in sync with
+  // `ringR` in engine/refs.js and SceneEngine's resize handler, which pull the
+  // whole ring back by the same amount so card size on screen stays unchanged.
+  const radius = isMobile ? 470 : 730;
   const ring = useMemo(() => buildSocialRing(radius), [radius]);
 
   return (
