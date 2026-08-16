@@ -4,8 +4,10 @@ import { ACCENT_ORANGE, CONTACT } from '../data/content';
 
 const navLinks = [
   { href: '#sobre-mi', label: 'Sobre mí' },
+  { href: '#social', label: 'Social' },
   { href: '#camara', label: 'Cámara' },
   { href: '#video', label: 'Video' },
+  { href: '#ia', label: 'IA' },
   { href: '#diseno', label: 'Diseño' }
 ];
 

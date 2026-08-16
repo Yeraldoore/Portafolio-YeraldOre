@@ -49,7 +49,7 @@ export default function VideoPortfolioSection() {
         <div ref={rowRef} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(20px,2.4vw,40px)', padding: '0 clamp(20px,5vw,60px)', willChange: 'transform' }}>
           <div style={{ flex: 'none', width: 'min(88vw,430px)', display: 'flex', flexDirection: 'column', gap: 20 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>04</span>
+              <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>05</span>
               <span style={{ width: 26, height: 1, background: 'currentColor', opacity: 0.35, display: 'block' }} />
               <span style={{ fontSize: 11, letterSpacing: '.24em', textTransform: 'uppercase', opacity: 0.6 }}>Portafolio de video</span>
             </div>

@@ -12,6 +12,7 @@ import CameraSection from './components/CameraSection';
 import VideoPortfolioSection from './components/VideoPortfolioSection';
 import SocialAdsSection from './components/SocialAdsSection';
 import MusicVideosSection from './components/MusicVideosSection';
+import AiToolsSection from './components/AiToolsSection';
 import GraphicDesignSection from './components/GraphicDesignSection';
 import ContactSection from './components/ContactSection';
 import VideoModal from './components/VideoModal';
@@ -32,10 +33,11 @@ export default function App() {
             <Hero />
             <AboutSection />
             <SkillsSection />
+            <SocialAdsSection />
             <CameraSection />
             <VideoPortfolioSection />
-            <SocialAdsSection />
             <MusicVideosSection />
+            <AiToolsSection />
             <GraphicDesignSection />
             <ContactSection />
           </main>

@@ -13,7 +13,7 @@ function GfxCard({ item, index }) {
       style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', background: 'rgba(12,11,10,.06)', border: '1px solid rgba(12,11,10,.10)' }}
     >
       <img loading="lazy" decoding="async" src={item.src} alt={item.title} style={{ width: '100%', height: 'auto', display: 'block', aspectRatio: item.ratio, background: 'rgba(12,11,10,.06)' }} />
-      <GlowRing variant="edge" />
+      <GlowRing />
       <div
         className="gfx-cap"
         style={{
@@ -38,7 +38,7 @@ export default function GraphicDesignSection() {
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>07</span>
+              <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>08</span>
               <span style={{ width: 26, height: 1, background: 'currentColor', opacity: 0.35, display: 'block' }} />
               <span style={{ fontSize: 11, letterSpacing: '.24em', textTransform: 'uppercase', opacity: 0.6 }}>Diseño gráfico</span>
             </div>

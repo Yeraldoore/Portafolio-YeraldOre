@@ -3,9 +3,10 @@ import SplitReveal from './SplitReveal';
 import Reveal from './Reveal';
 import GlowRing from './GlowRing';
 import { useMouseRef } from '../context/MouseContext';
+import InfiniteVideoMarquee from './InfiniteVideoMarquee';
 import { createRenderer, disposeRenderer, fitRenderer } from '../three/common';
 import { createGearScene, frameGear } from '../three/gear';
-import { ACCENT, gear } from '../data/content';
+import { ACCENT, gear, camaraReel } from '../data/content';
 
 function onScreen(el, pad = 180) {
   if (!el) return false;
@@ -122,12 +123,12 @@ function Gear3DBand() {
 
 export default function CameraSection() {
   return (
-    <section id="camara" style={{ position: 'relative', padding: 'clamp(90px,15vh,180px) clamp(20px,5vw,60px) clamp(80px,12vh,150px)', color: '#F4F1EC', overflow: 'hidden' }}>
-      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'clamp(40px,6vw,80px)' }}>
+    <section id="camara" style={{ position: 'relative', padding: 'clamp(90px,15vh,180px) 0 clamp(80px,12vh,150px)', color: '#F4F1EC', overflow: 'hidden' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 clamp(20px,5vw,60px)', display: 'flex', flexDirection: 'column', gap: 'clamp(40px,6vw,80px)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))', gap: 'clamp(28px,4vw,70px)', alignItems: 'end' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>03</span>
+              <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>04</span>
               <span style={{ width: 26, height: 1, background: 'currentColor', opacity: 0.35, display: 'block' }} />
               <span style={{ fontSize: 11, letterSpacing: '.24em', textTransform: 'uppercase', opacity: 0.6 }}>Detrás de cámara</span>
             </div>
@@ -151,7 +152,7 @@ export default function CameraSection() {
               className="gear-card"
               style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 16, padding: 'clamp(22px,2.4vw,30px)', borderRadius: 16, background: 'rgba(255,255,255,.035)', border: '1px solid rgba(255,255,255,.09)', overflow: 'hidden' }}
             >
-              <GlowRing variant="edge" />
+              <GlowRing />
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
                 <span className="clash" style={{ color: ACCENT, fontSize: '.82rem', letterSpacing: '.18em' }}>{g.n}</span>
                 <span style={{ width: 34, height: 1, background: 'currentColor', opacity: 0.25, display: 'block' }} />
@@ -160,6 +161,21 @@ export default function CameraSection() {
               <span style={{ fontSize: '.92rem', lineHeight: 1.6, opacity: 0.66 }}>{g.desc}</span>
             </Reveal>
           ))}
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(22px,3vw,34px)', marginTop: 'clamp(52px,7vw,96px)' }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto', width: '100%', padding: '0 clamp(20px,5vw,60px)', display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: 16 }}>
+          <h3 className="clash" style={{ margin: 0, fontWeight: 600, fontSize: 'clamp(1.4rem,2.8vw,2.3rem)', lineHeight: 1, letterSpacing: '-.025em' }}>En set</h3>
+          <span style={{ fontSize: 11, letterSpacing: '.2em', textTransform: 'uppercase', opacity: 0.45 }}>Cámara, gimbal y equipo en mano</span>
+          <span style={{ flex: 1, minWidth: 20, height: 1, background: 'currentColor', opacity: 0.14 }} />
+          <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.2em' }}>{String(camaraReel.length).padStart(2, '0')}</span>
+        </div>
+
+        <InfiniteVideoMarquee videos={camaraReel} />
+
+        <div style={{ maxWidth: 1400, margin: '0 auto', width: '100%', padding: '0 clamp(20px,5vw,60px)', display: 'flex', alignItems: 'center', gap: 12, fontSize: 10, letterSpacing: '.24em', textTransform: 'uppercase', opacity: 0.4 }}>
+          <span style={{ color: ACCENT }}>◦</span> Arrastra para recorrer · clic para reproducir
         </div>
       </div>
     </section>

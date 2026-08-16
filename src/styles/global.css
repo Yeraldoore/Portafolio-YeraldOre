@@ -64,17 +64,19 @@ button { font: inherit; }
 /* hover-driven micro interactions that inline React styles can't express */
 .video-card .video-cap { opacity: 0; transition: opacity .5s ease; }
 .video-card:hover .video-cap, .video-card:focus-within .video-cap { opacity: 1; }
-.video-card .glow-edge, .video-card .glow-halo { opacity: 0; transition: opacity .45s ease; }
-.video-card:hover .glow-edge, .video-card:focus-within .glow-edge { opacity: 1; }
-.video-card:hover .glow-halo, .video-card:focus-within .glow-halo { opacity: .5; }
 
 .gfx-card .gfx-cap { opacity: 0; transition: opacity .5s ease; }
 .gfx-card:hover .gfx-cap, .gfx-card:focus-within .gfx-cap { opacity: 1; }
 
+/* Animated conic edge-light shared by every card. Border-only by design — it
+   must never wash over the artwork or video underneath it. */
 .glow-ring { opacity: 0; transition: opacity .45s ease; }
 .gfx-card:hover .glow-ring, .gfx-card:focus-within .glow-ring,
 .gear-card:hover .glow-ring, .gear-card:focus-within .glow-ring,
-.ring-card:hover .glow-ring, .ring-card:focus-within .glow-ring { opacity: 1; }
+.ring-card:hover .glow-ring, .ring-card:focus-within .glow-ring,
+.video-card:hover .glow-ring, .video-card:focus-within .glow-ring,
+.skill-card:hover .glow-ring, .skill-card:focus-within .glow-ring,
+.ai-card:hover .glow-ring, .ai-card:focus-within .glow-ring { opacity: 1; }
 
 .contact-row { transition: padding-left .5s cubic-bezier(.2,.7,.2,1); }
 .contact-row:hover { padding-left: 22px; }
@@ -124,6 +126,6 @@ button { font: inherit; }
     opacity: 1 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background: linear-gradient(to top, rgba(8,8,10,.86) 0%, rgba(8,8,10,.35) 42%, rgba(8,8,10,0) 78%) !important;
+    background: linear-gradient(to top, rgba(8,8,10,.8) 0%, rgba(8,8,10,.24) 44%, rgba(8,8,10,0) 74%) !important;
   }
 }

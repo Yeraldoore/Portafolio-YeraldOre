@@ -2,10 +2,13 @@
 export const ACCENT = '#E6C48D';
 export const ACCENT_ORANGE = '#FF7A45';
 
-const vid = (id, title) => ({
+// `portrait` picks YouTube's original-aspect thumbnail, which for Shorts is the
+// full vertical frame instead of a letterboxed 16/9 crop.
+const vid = (id, title, portrait) => ({
   id,
   url: `https://www.youtube.com/embed/${id}`,
-  thumb: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
+  thumb: portrait ? `https://i.ytimg.com/vi/${id}/oardefault.jpg` : `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
+  thumbFallback: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
   title
 });
 
@@ -26,13 +29,27 @@ export const cats = [
   mkCat('Cortometrajes', ['UZkgjoVXCHw', 'T70Ub5FbqgE'])
 ];
 
-const socialIds = ['-Gr4EBik6kM', 'gHqbHcQMnkA', 'dzC67cUfTJE', 'DZ1tMiczQbk', 'H4vm2YUhQak'];
+// Behind-the-camera clips for the "Detrás de cámara" infinite marquee,
+// highest-priority first.
+export const camaraReel = [
+  'RZgah9TMnu8',
+  'fahrJZaN7PE',
+  'YWq93bd7CVk',
+  'JzFSH52ajN8',
+  'LYNwNjAFR9I',
+  '-5ryqHKzAqQ',
+  'xHC3CNySz4E',
+  'dtU94kbZHB0',
+  'teARRgd5WM0'
+].map((id, i) => vid(id, `En set ${String(i + 1).padStart(2, '0')}`, true));
+
+const socialIds = ['tjvHTJC3Dz4', 'gHqbHcQMnkA', 'GnHW2fNtf5U', 'elgxlirWxFs', 'od3O5ri5I6I', '-Gr4EBik6kM', 'DZ1tMiczQbk', 'dzC67cUfTJE'];
 export function buildSocialRing(radius) {
   const ringN = socialIds.length * 2;
   const step = 360 / ringN;
   const items = [];
   for (let i = 0; i < ringN; i++) {
-    const v = vid(socialIds[i % socialIds.length], `Social Ad ${String((i % socialIds.length) + 1).padStart(2, '0')}`);
+    const v = vid(socialIds[i % socialIds.length], `Social Ad ${String((i % socialIds.length) + 1).padStart(2, '0')}`, true);
     v.angle = i * step;
     v.transform = `translate(-50%,-50%) rotateY(${i * step}deg) translateZ(${radius}px)`;
     items.push(v);
@@ -44,16 +61,35 @@ export const musicales = ['jJxaYph3Vyg', 'fvC4s3SsBA8', 'uRIiIzs70wo'].map((id, 
   vid(id, `Video musical ${String(i + 1).padStart(2, '0')}`)
 );
 
+// `mark`/`brand` drive the stylized monogram badge rendered by <ToolLogo>.
 export const skills = [
-  { name: 'Adobe Premiere Pro', level: 'Avanzado', pct: 95 },
-  { name: 'CapCut', level: 'Avanzado', pct: 92 },
-  { name: 'Canva', level: 'Avanzado', pct: 88 },
-  { name: 'Flow (IA para edición)', level: 'Intermedio', pct: 74, highlight: true },
-  { name: 'Adobe After Effects', level: 'Intermedio', pct: 70 },
-  { name: 'Adobe Photoshop', level: 'Intermedio', pct: 68 },
-  { name: 'DaVinci Resolve', level: 'Intermedio', pct: 66 },
-  { name: 'Adobe Illustrator', level: 'Básico', pct: 30 }
+  { name: 'Adobe Premiere Pro', level: 'Avanzado', pct: 95, mark: 'Pr', brand: '#9999FF' },
+  { name: 'CapCut', level: 'Avanzado', pct: 92, mark: 'Cc', brand: '#25F4EE' },
+  { name: 'Canva', level: 'Avanzado', pct: 88, mark: 'Cv', brand: '#00C4CC' },
+  { name: 'Flow (IA para edición)', level: 'Intermedio', pct: 74, highlight: true, mark: 'Fl', brand: '#E6C48D' },
+  { name: 'Adobe After Effects', level: 'Intermedio', pct: 70, mark: 'Ae', brand: '#C9A0FF' },
+  { name: 'Adobe Photoshop', level: 'Intermedio', pct: 68, mark: 'Ps', brand: '#31A8FF' },
+  { name: 'DaVinci Resolve', level: 'Intermedio', pct: 66, mark: 'Dr', brand: '#5B8FC7' },
+  { name: 'Adobe Illustrator', level: 'Básico', pct: 30, mark: 'Ai', brand: '#FF9A00' }
 ];
+
+export const aiTools = [
+  { name: 'ChatGPT', mark: 'GPT', brand: '#10A37F', desc: 'Guiones, estructura narrativa e ideación de conceptos.' },
+  { name: 'Claude', mark: 'C', brand: '#D97757', desc: 'Redacción, análisis de referencias y dirección creativa.' },
+  { name: 'Gemini', mark: 'G', brand: '#8E75B2', desc: 'Exploración visual y apoyo en preproducción.' },
+  { name: 'Higgsfield', mark: 'H', brand: '#7B2FF7', desc: 'Generación de video y movimiento de cámara con IA.' }
+];
+
+export const aiVideos = [
+  'RKECMe_6CHA',
+  '73HuO_RYpNc',
+  'd48JPzl8vbM',
+  '2Sdr97nyMcU',
+  'iiI7rfmggWE',
+  '-0Kv_T5C2uM',
+  'nESKjMO9AZE',
+  'jm4XbtC3F9g'
+].map((id, i) => vid(id, `Pieza IA ${String(i + 1).padStart(2, '0')}`, true));
 
 export const gfxCols = [
   {
@@ -108,10 +144,11 @@ export const worlds = [
   { id: 'hero', bg: '#0A0A0A', fg: '#F4F1EC' },
   { id: 'sobre-mi', bg: '#EFEBE3', fg: '#0C0B0A' },
   { id: 'habilidades', bg: '#16120E', fg: '#F4F1EC' },
+  { id: 'social', bg: '#0B0D12', fg: '#F4F1EC' },
   { id: 'camara', bg: '#0C0F14', fg: '#F4F1EC' },
   { id: 'video', bg: '#08080A', fg: '#F4F1EC' },
-  { id: 'social', bg: '#0B0D12', fg: '#F4F1EC' },
   { id: 'musicales', bg: '#17120F', fg: '#F4F1EC' },
+  { id: 'ia', bg: '#0A0E18', fg: '#F4F1EC' },
   { id: 'diseno', bg: '#E8E3D9', fg: '#0C0B0A' },
   { id: 'contacto', bg: '#0A0A0A', fg: '#F4F1EC' }
 ];

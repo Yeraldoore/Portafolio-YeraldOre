@@ -1,6 +1,8 @@
 import Reveal from './Reveal';
 import SplitReveal from './SplitReveal';
 import Meter from './Meter';
+import GlowRing from './GlowRing';
+import ToolLogo from './ToolLogo';
 import { ACCENT, skills } from '../data/content';
 import { rgba } from '../utils/color';
 
@@ -29,15 +31,18 @@ export default function SkillsSection() {
             <Reveal
               key={s.name}
               index={i}
+              className="skill-card"
               style={{
-                position: 'relative', display: 'flex', flexDirection: 'column', gap: 16, padding: '24px 26px', borderRadius: 16,
+                position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 16, padding: '24px 26px', borderRadius: 16,
                 background: 'rgba(255,255,255,.035)',
                 border: s.highlight ? `1px solid ${ACCENT}` : '1px solid rgba(255,255,255,.08)',
                 boxShadow: s.highlight ? `0 0 0 1px ${rgba(ACCENT, 0.35)}, 0 18px 50px ${rgba(ACCENT, 0.16)}, inset 0 0 40px ${rgba(ACCENT, 0.07)}` : 'none'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 16 }}>
-                <span className="clash" style={{ fontWeight: 600, fontSize: 'clamp(1.02rem,1.5vw,1.28rem)', letterSpacing: '-.01em' }}>{s.name}</span>
+              <GlowRing />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                <ToolLogo mark={s.mark} brand={s.brand} />
+                <span className="clash" style={{ flex: 1, minWidth: 0, fontWeight: 600, fontSize: 'clamp(1.02rem,1.5vw,1.28rem)', letterSpacing: '-.01em' }}>{s.name}</span>
                 <span style={{ flex: 'none', fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase', opacity: 0.55 }}>{s.level}</span>
               </div>
               <Meter pct={s.pct} />

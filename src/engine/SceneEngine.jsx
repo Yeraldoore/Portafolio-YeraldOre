@@ -72,7 +72,7 @@ export default function SceneEngine() {
     }
 
     const onResize = () => {
-      s.ringR = window.innerWidth < 900 ? 250 : 480;
+      s.ringR = window.innerWidth < 900 ? 280 : 520;
     };
     window.addEventListener('resize', onResize);
 

@@ -44,7 +44,6 @@ export default function VideoCard({
   radius = 14,
   frameInset = 10,
   frameRadius,
-  glowVariant = 'pair',
   index = 0,
   reveal = true,
   ...rest
@@ -64,16 +63,16 @@ export default function VideoCard({
         entries.forEach((e) => {
           if (!e.isIntersecting) return;
           let url = video.thumb;
-          if (url.indexOf('maxresdefault') > -1) {
-            if (isMobile) url = url.replace('maxresdefault', 'hqdefault');
-            else
-              img.addEventListener(
-                'error',
-                () => {
-                  img.src = url.replace('maxresdefault', 'hqdefault');
-                },
-                { once: true }
-              );
+          const fallback = video.thumbFallback || url.replace('maxresdefault', 'hqdefault');
+          if (isMobile && url.indexOf('maxresdefault') > -1) url = fallback;
+          else if (url !== fallback) {
+            img.addEventListener(
+              'error',
+              () => {
+                img.src = fallback;
+              },
+              { once: true }
+            );
           }
           img.src = url;
           setLoaded(true);
@@ -106,18 +105,17 @@ export default function VideoCard({
         background: '#0E0E10', border: '1px solid rgba(255,255,255,.08)', ...style
       }}
       {...(reveal ? revealVariants(index) : {})}
-      whileHover={{ scale: 1.015, transition: { duration: 0.6, ease: [0.2, 0.7, 0.2, 1] } }}
+      whileHover={{ scale: 1.045, transition: { duration: 0.5, ease: [0.2, 0.7, 0.2, 1] } }}
       {...rest}
     >
       <img ref={imgRef} loading="lazy" decoding="async" alt={video.title} style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#0E0E10' }} />
       {active && loaded && <PreviewIframe id={video.id} portrait={portrait} />}
-      <GlowRing variant={glowVariant} />
+      <GlowRing />
       <div
         className="video-cap"
         style={{
           position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-end', padding: 16,
-          background: 'linear-gradient(to top,rgba(8,8,10,.76),rgba(8,8,10,.1) 55%,rgba(8,8,10,0))',
-          backdropFilter: 'blur(3px)', WebkitBackdropFilter: 'blur(3px)'
+          background: 'linear-gradient(to top,rgba(8,8,10,.72),rgba(8,8,10,.06) 46%,rgba(8,8,10,0) 70%)'
         }}
       >
         <div style={{ position: 'absolute', inset: frameInset, border: '1px solid rgba(244,241,236,.3)', borderRadius: frameRadius ?? Math.max(0, radius - 6), pointerEvents: 'none' }} />

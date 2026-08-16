@@ -32,6 +32,6 @@ export const engineState = {
   dragMoved: 0,
   dragX: 0,
   ringVel: 0,
-  ringR: typeof window !== 'undefined' && window.innerWidth < 900 ? 250 : 480,
+  ringR: typeof window !== 'undefined' && window.innerWidth < 900 ? 280 : 520,
   ringCards: null
 };

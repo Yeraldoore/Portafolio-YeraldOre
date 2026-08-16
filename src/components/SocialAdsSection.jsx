@@ -10,7 +10,7 @@ import { ACCENT, buildSocialRing } from '../data/content';
 // itself as the section scrolls into view.
 export default function SocialAdsSection() {
   const { isMobile } = useBreakpoints();
-  const radius = isMobile ? 250 : 480;
+  const radius = isMobile ? 280 : 520;
   const ring = useMemo(() => buildSocialRing(radius), [radius]);
 
   return (
@@ -23,7 +23,7 @@ export default function SocialAdsSection() {
     >
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18, textAlign: 'center', padding: '0 clamp(20px,5vw,60px)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>05</span>
+          <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>03</span>
           <span style={{ width: 26, height: 1, background: 'currentColor', opacity: 0.35, display: 'block' }} />
           <span style={{ fontSize: 11, letterSpacing: '.24em', textTransform: 'uppercase', opacity: 0.6 }}>Social Ads</span>
         </div>
@@ -38,14 +38,14 @@ export default function SocialAdsSection() {
       <div
         ref={bindEngineRef('ringStage')}
         data-cursor="drag"
-        style={{ position: 'relative', zIndex: 1, height: 'clamp(300px,54svh,540px)', perspective: 1500, perspectiveOrigin: '50% 46%', cursor: 'grab', touchAction: 'pan-y' }}
+        style={{ position: 'relative', zIndex: 1, height: 'clamp(350px,60svh,620px)', perspective: 1500, perspectiveOrigin: '50% 46%', cursor: 'grab', touchAction: 'pan-y' }}
       >
         <div ref={bindEngineRef('car')} style={{ position: 'absolute', left: '50%', top: '50%', width: 0, height: 0, transformStyle: 'preserve-3d', willChange: 'transform', opacity: 0 }}>
           {ring.map((v, i) => (
             <div
               key={`${v.id}-${i}`}
               data-ringcard={v.angle}
-              style={{ position: 'absolute', left: 0, top: 0, width: 'clamp(140px,min(15vw,26svh),240px)', backfaceVisibility: 'hidden', transform: v.transform }}
+              style={{ position: 'absolute', left: 0, top: 0, width: 'clamp(160px,min(17vw,29svh),272px)', backfaceVisibility: 'hidden', transform: v.transform }}
             >
               <VideoCard
                 video={v}
@@ -55,7 +55,6 @@ export default function SocialAdsSection() {
                 frameRadius={8}
                 portrait
                 reveal={false}
-                glowVariant="halo"
                 className="ring-card"
                 onBeforeOpen={() => engineState.dragMoved <= 6}
                 style={{ width: '100%', border: '1px solid rgba(255,255,255,.1)', boxShadow: '0 34px 80px rgba(0,0,0,.55)' }}

@@ -35,7 +35,7 @@ export default function ContactSection() {
       <div style={{ maxWidth: 1400, margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: 'clamp(40px,6vw,80px)' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>08</span>
+            <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.24em' }}>09</span>
             <span style={{ width: 26, height: 1, background: 'currentColor', opacity: 0.35, display: 'block' }} />
             <span style={{ fontSize: 11, letterSpacing: '.24em', textTransform: 'uppercase', opacity: 0.6 }}>Contacto</span>
           </div>
