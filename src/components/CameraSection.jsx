@@ -172,7 +172,12 @@ export default function CameraSection() {
           <span style={{ color: ACCENT, fontSize: 11, letterSpacing: '.2em' }}>{String(camaraReel.length).padStart(2, '0')}</span>
         </div>
 
-        <InfiniteVideoMarquee videos={camaraReel} />
+        {/* The wrapper alone carries the scroll entrance/exit. The marquee's own
+            rAF keeps driving the inner track's translate3d untouched, and this
+            never unmounts it, so its loop position survives leaving the fold. */}
+        <Reveal inOut style={{ willChange: 'opacity, transform' }}>
+          <InfiniteVideoMarquee videos={camaraReel} />
+        </Reveal>
 
         <div style={{ maxWidth: 1400, margin: '0 auto', width: '100%', padding: '0 clamp(20px,5vw,60px)', display: 'flex', alignItems: 'center', gap: 12, fontSize: 10, letterSpacing: '.24em', textTransform: 'uppercase', opacity: 0.4 }}>
           <span style={{ color: ACCENT }}>◦</span> Arrastra para recorrer · clic para reproducir
