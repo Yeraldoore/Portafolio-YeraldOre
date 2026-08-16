@@ -46,10 +46,15 @@ export default function VideoCard({
   frameRadius,
   index = 0,
   reveal = true,
+  forcePreview,
   ...rest
 }) {
   const rootRef = useRef(null);
   const imgRef = useRef(null);
+  // Read through a ref so a caller can flip this every frame from a scroll
+  // timeline without re-rendering the card.
+  const forceRef = useRef(forcePreview);
+  forceRef.current = forcePreview;
   const [active, setActive] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const { isMobile } = useBreakpoints();
@@ -86,7 +91,14 @@ export default function VideoCard({
   }, [video.thumb, isMobile]);
 
   useEffect(() => {
-    return registerPreviewCard({ getEl: () => rootRef.current, setActive });
+    return registerPreviewCard({
+      getEl: () => rootRef.current,
+      setActive,
+      force: () => {
+        const f = forceRef.current;
+        return typeof f === 'function' ? f() : !!f;
+      }
+    });
   }, []);
 
   const handleClick = () => {

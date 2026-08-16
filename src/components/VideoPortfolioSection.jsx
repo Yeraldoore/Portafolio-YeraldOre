@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '../lib/gsap';
 import { useBreakpoints } from '../hooks/useBreakpoints';
 import VideoCard from './VideoCard';
+import DocumentalStage from './DocumentalStage';
 import { ACCENT, reel, cats } from '../data/content';
 
 // The horizontal "Reel / Destacados" row pins the section and scrubs its
@@ -69,9 +70,14 @@ export default function VideoPortfolioSection() {
         </div>
       </div>
 
-      <div style={{ padding: 'clamp(70px,10vh,130px) clamp(20px,5vw,60px) clamp(90px,14vh,170px)', maxWidth: 1400, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'clamp(60px,8vh,110px)' }}>
-        {cats.map((c) => (
-          <div key={c.label} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(20px,2.6vw,34px)' }}>
+      {/* "Documental" gets the pull-back stage instead of a card row, so it is
+          rendered outside the max-width column to run full-bleed. The other
+          categories keep the original grid untouched. */}
+      {cats.map((c) =>
+        c.label === 'Documental' ? (
+          <DocumentalStage key={c.label} video={c.videos[0]} note={c.note} count={c.count} />
+        ) : (
+          <div key={c.label} style={{ padding: 'clamp(70px,10vh,130px) clamp(20px,5vw,60px)', maxWidth: 1400, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'clamp(20px,2.6vw,34px)' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: 16 }}>
               <h3 className="clash" style={{ margin: 0, fontWeight: 600, fontSize: 'clamp(1.4rem,2.8vw,2.3rem)', lineHeight: 1, letterSpacing: '-.025em' }}>{c.label}</h3>
               {c.note && <span style={{ fontSize: 11, letterSpacing: '.2em', textTransform: 'uppercase', opacity: 0.45 }}>{c.note}</span>}
@@ -84,8 +90,8 @@ export default function VideoPortfolioSection() {
               ))}
             </div>
           </div>
-        ))}
-      </div>
+        )
+      )}
     </section>
   );
 }

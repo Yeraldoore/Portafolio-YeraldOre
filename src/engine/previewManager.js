@@ -31,8 +31,16 @@ function tick(now) {
   const cy = vh / 2;
   const max = window.innerWidth > 900 ? 4 : 2;
   const visible = [];
+  // Cards that must keep playing regardless of where they sit — used by the
+  // Documental stage, whose card is mid-transform and so cannot be judged by
+  // its distance to the viewport centre.
+  const keep = new Set();
 
   cards.forEach((c) => {
+    if (c.force && c.force()) {
+      keep.add(c);
+      return;
+    }
     const el = c.getEl();
     if (!el) return;
     const b = el.getBoundingClientRect();
@@ -42,7 +50,7 @@ function tick(now) {
   });
 
   visible.sort((a, b) => a.d - b.d);
-  const keep = new Set(visible.slice(0, max).map((v) => v.c));
+  for (let i = 0; i < visible.length && keep.size < max; i++) keep.add(visible[i].c);
 
   cards.forEach((c) => c.setActive(keep.has(c)));
 }

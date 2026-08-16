@@ -105,6 +105,29 @@ button { font: inherit; }
   .gear-band { height: clamp(320px, 52svh, 560px); }
 }
 
+/* Replicates object-fit:cover with a real box: the frame keeps the background
+   image's own 1477x704 aspect and is grown until it covers the stage on both
+   axes. Because the box IS the image, SCREEN_TARGET's percentages keep landing
+   on the screen in the artwork at any viewport shape — which they would not if
+   the image were cover-cropped inside a differently-shaped container. */
+.documental-frame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100%, calc(100svh * 1477 / 704));
+  aspect-ratio: 1477 / 704;
+}
+
+/* Narrow, tall viewports: covering would blow the frame out to ~4.5x the
+   screen width, which puts the target screen at ~620px — wider than the phone
+   itself — so the video would end up larger than the viewport and the room
+   would never be revealed. Fit by width instead: the whole space is visible,
+   letterboxed, and the video still visibly shrinks into the screen. */
+@media (max-width: 899px) {
+  .documental-frame { width: 100%; }
+}
+
 .hero-grid { grid-template-columns: 1fr; }
 @media (min-width: 900px) {
   .hero-grid { grid-template-columns: repeat(3, 1fr); }
