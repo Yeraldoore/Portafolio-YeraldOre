@@ -176,22 +176,8 @@ export default function SceneEngine() {
         }
       }
 
-      const hero = document.getElementById('hero');
-      if (hero) {
-        const hp = prog(hero, 0, -0.7);
-        const inner = hero.firstElementChild;
-        const tr = `translate3d(0,${-70 * hp}px,0)`;
-        const op = String(1 - 0.75 * hp);
-        if (inner) {
-          inner.style.transform = tr;
-          inner.style.opacity = op;
-        }
-        const av = getEngineRef('avatarWrap');
-        if (av) {
-          av.style.transform = tr;
-          av.style.opacity = op;
-        }
-      }
+      // The hero's exit is owned by Hero.jsx's pinned GSAP hand-off now. Writing
+      // transform/opacity here every frame would overwrite it.
 
       let bg = worlds[0].bg;
       let headFg = worlds[0].fg;

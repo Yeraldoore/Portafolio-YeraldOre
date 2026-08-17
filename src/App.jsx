@@ -3,6 +3,7 @@ import { VideoModalProvider } from './context/VideoModalContext';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import SceneEngine from './engine/SceneEngine';
 import BackgroundLayers from './components/BackgroundLayers';
+import ScrollLine from './components/ScrollLine';
 import CustomCursor from './components/CustomCursor';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -26,6 +27,9 @@ export default function App() {
       <VideoModalProvider>
         <div style={{ position: 'relative', width: '100%', overflowX: 'clip', background: 'transparent' }}>
           <BackgroundLayers />
+          {/* Between the background layers and <main>: always visible over the
+              page colour, never able to cover content or the header. */}
+          <ScrollLine />
           <SceneEngine />
           <Header />
 
