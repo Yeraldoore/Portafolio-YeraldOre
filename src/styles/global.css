@@ -115,8 +115,8 @@ button { font: inherit; }
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: max(100%, calc(100svh * 1477 / 704));
-  aspect-ratio: 1477 / 704;
+  width: max(100%, calc(100svh * 1182 / 561));
+  aspect-ratio: 1182 / 561;
 }
 
 /* Narrow, tall viewports: covering would blow the frame out to ~4.5x the

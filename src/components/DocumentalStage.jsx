@@ -3,17 +3,18 @@ import { gsap, ScrollTrigger } from '../lib/gsap';
 import VideoCard from './VideoCard';
 import { ACCENT } from '../data/content';
 
-// Where the screen sits inside documentales-bg.jpg, as percentages of the
-// image itself. Calibrated against the 1477x704 file — tweak here if the
-// landing needs a nudge.
-const SCREEN_TARGET = { left: 32.77, top: 28.55, width: 35.14, height: 41.05 };
+// Where the screen sits inside documentales-bg.png, as percentages of the image
+// itself — measured from the file's own alpha hole (1182x561, the cut-out is a
+// 100% solid transparent rectangle). Tweak here if the landing needs a nudge;
+// keep the aspect in .documental-frame in sync with the image's dimensions.
+const SCREEN_TARGET = { left: 33.16, top: 28.52, width: 35.28, height: 41.53 };
 
-// The background is upscaled to cover the frame, which leaves its screen edge
-// softly resampled — landing exactly on SCREEN_TARGET therefore lets a ~2px
-// green seam show around the video. Bleed a hair past the calibration to swallow
-// it. In percentage points, and asymmetric because the frame is ~2.1:1, so a
-// point of width covers about twice the pixels a point of height does. Set both
-// to 0 to sit exactly on the measured rectangle.
+// The background is rescaled to cover the frame, which leaves the edge of its
+// cut-out softly resampled — landing exactly on SCREEN_TARGET therefore lets a
+// ~2px seam show around the video. Bleed a hair past the calibration to tuck the
+// video edge under the bezel. In percentage points, and asymmetric because the
+// frame is ~2.1:1, so a point of width covers about twice the pixels a point of
+// height does. Set both to 0 to sit exactly on the measured rectangle.
 const OVERSCAN = { x: 0.26, y: 0.44 };
 
 const MEDIA_BOX = {
@@ -23,15 +24,13 @@ const MEDIA_BOX = {
   height: SCREEN_TARGET.height + OVERSCAN.y * 2
 };
 
-// Native size of that background, used to lock the frame's aspect so the
-// percentages above stay valid at any viewport shape.
-const BG_W = 1477;
-const BG_H = 704;
-
-// Timeline landmarks, as a fraction of the pinned scroll.
-const FIT_AT = 0.62; // media has landed in SCREEN_TARGET
-const REVEAL_AT = 0.7; // background finished pulling back
-const BLUR_FROM = 0.83; // phase 5 hand-off begins
+// Timeline landmarks, as a fraction of the pinned scroll. The video holds its
+// opening size for the whole dwell — the reveal only starts once the viewer has
+// spent real scroll with it as the protagonist.
+const DWELL_END = 0.35; // phase 1 ends; pull-back and reveal begin
+const FIT_AT = 0.76; // media has landed in SCREEN_TARGET
+const REVEAL_AT = 0.8; // background finished pulling back
+const BLUR_FROM = 0.84; // phase 5 hand-off begins
 
 export default function DocumentalStage({ video, note, count }) {
   const stageRef = useRef(null);
@@ -76,7 +75,9 @@ export default function DocumentalStage({ video, note, count }) {
 
         const startSize = narrow ? 0.92 : 0.82;
         const startHeight = narrow ? 0.52 : 0.74;
-        const scrollLen = narrow ? 1400 : 1800;
+        // Longer than it needs to be for the pull-back alone: the dwell eats the
+        // first third, so this keeps the reveal itself as unhurried as before.
+        const scrollLen = narrow ? 2000 : 2600;
 
         // Measured fresh on every refresh (mount, resize, orientation change)
         // so the landing is exact at any size rather than baked in at mount.
@@ -115,23 +116,37 @@ export default function DocumentalStage({ video, note, count }) {
           }
         });
 
-        // Phases 1-2: the media pulls back from filling the viewport to the
-        // screen inside the image.
+        // Phase 1 — dwell. The video holds its opening size while the room stays
+        // zoomed and out of focus behind it. A 2% drift over the whole stretch
+        // keeps it from reading as a frozen screenshot without starting the
+        // pull-back early.
+        gsap.set(bg, { scale: 1.12, filter: 'blur(5px)' });
         tl.fromTo(
           media,
           { x: () => start.x, y: () => start.y, scale: () => start.scale },
-          { x: 0, y: 0, scale: 1, ease: 'none', duration: FIT_AT },
+          { x: () => start.x, y: () => start.y, scale: () => start.scale * 1.02, ease: 'none', duration: DWELL_END },
           0
         );
+        tl.addLabel('dwellEnd', DWELL_END);
 
-        // Phase 3: the room is revealed as the camera backs off, coming into
-        // focus as it settles — the depth cue that scale alone cannot sell.
-        tl.fromTo(bg, { scale: 1.12 }, { scale: 1, ease: 'none', duration: REVEAL_AT }, 0);
-        tl.fromTo(bg, { filter: 'blur(5px)' }, { filter: 'blur(0px)', ease: 'none', duration: REVEAL_AT * 0.8 }, 0);
-        tl.fromTo(copy, { opacity: 1 }, { opacity: 0, ease: 'none', duration: 0.3 }, 0);
+        // Phase 2 — the pull-back proper, from the dwell size down to the screen.
+        tl.to(media, { x: 0, y: 0, scale: 1, ease: 'none', duration: FIT_AT - DWELL_END }, 'dwellEnd');
+        tl.addLabel('fit', FIT_AT);
 
-        // Phase 5: hand off to the next category.
-        tl.to(inner, { filter: 'blur(14px)', opacity: 0, ease: 'none', duration: 1 - BLUR_FROM }, BLUR_FROM);
+        // Phase 3 — the room is revealed as the camera backs off, coming into
+        // focus as it settles: the depth cue that scale alone cannot sell.
+        tl.fromTo(bg, { scale: 1.12 }, { scale: 1, ease: 'none', duration: REVEAL_AT - DWELL_END }, 'dwellEnd');
+        tl.fromTo(
+          bg,
+          { filter: 'blur(5px)' },
+          { filter: 'blur(0px)', ease: 'none', duration: (REVEAL_AT - DWELL_END) * 0.8 },
+          'dwellEnd'
+        );
+        tl.fromTo(copy, { opacity: 1 }, { opacity: 0, ease: 'none', duration: 0.18 }, 'dwellEnd');
+
+        // Phase 5 — hand off to the next category.
+        tl.addLabel('blurStart', BLUR_FROM);
+        tl.to(inner, { filter: 'blur(14px)', opacity: 0, ease: 'none', duration: 1 - BLUR_FROM }, 'blurStart');
 
         measure();
         ScrollTrigger.refresh();
@@ -149,10 +164,15 @@ export default function DocumentalStage({ video, note, count }) {
     >
       <div ref={innerRef} className="documental-inner" style={{ position: 'absolute', inset: 0, overflow: 'hidden', willChange: 'opacity, filter' }}>
         <div ref={frameRef} className="documental-frame">
+          {/* The artwork's screen is a real alpha cut-out, so anything not
+              covered by the video would show whatever sits behind it. Back it
+              with the same solid the cards use, so a sliver left by a future
+              OVERSCAN or aspect change reads as black rather than see-through. */}
+          <div style={{ position: 'absolute', inset: 0, background: '#0E0E10' }} />
           <img
             ref={bgRef}
             className="documental-bg"
-            src="/assets/documentales-bg.jpg"
+            src="/assets/documentales-bg.png"
             alt=""
             aria-hidden="true"
             decoding="async"
