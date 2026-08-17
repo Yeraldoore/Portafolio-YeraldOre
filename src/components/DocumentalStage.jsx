@@ -27,14 +27,12 @@ const MEDIA_BOX = {
 // Timeline landmarks, as a fraction of the pinned scroll. The video holds its
 // opening size for the whole dwell — the reveal only starts once the viewer has
 // spent real scroll with it as the protagonist.
-const DWELL_END = 0.35; // phase 1 ends; pull-back and reveal begin
-const FIT_AT = 0.76; // media has landed in SCREEN_TARGET
-const REVEAL_AT = 0.8; // background finished pulling back
-const BLUR_FROM = 0.84; // phase 5 hand-off begins
+const DWELL_END = 0.38; // phase 1 ends; pull-back and reveal begin
+const FIT_AT = 0.9; // media has landed in SCREEN_TARGET
+const REVEAL_AT = 0.96; // background finished pulling back
 
 export default function DocumentalStage({ video, note, count }) {
   const stageRef = useRef(null);
-  const innerRef = useRef(null);
   const frameRef = useRef(null);
   const bgRef = useRef(null);
   const mediaRef = useRef(null);
@@ -45,7 +43,6 @@ export default function DocumentalStage({ video, note, count }) {
 
   useEffect(() => {
     const stage = stageRef.current;
-    const inner = innerRef.current;
     const bg = bgRef.current;
     const media = mediaRef.current;
     const copy = copyRef.current;
@@ -67,7 +64,6 @@ export default function DocumentalStage({ video, note, count }) {
         if (reduce) {
           gsap.set(media, { x: 0, y: 0, scale: 1, clearProps: 'pointerEvents' });
           gsap.set(bg, { scale: 1, filter: 'blur(0px)' });
-          gsap.set(inner, { opacity: 1, filter: 'blur(0px)' });
           gsap.set(copy, { opacity: 1 });
           forcePreviewRef.current = true;
           return;
@@ -75,9 +71,9 @@ export default function DocumentalStage({ video, note, count }) {
 
         const startSize = narrow ? 0.92 : 0.82;
         const startHeight = narrow ? 0.52 : 0.74;
-        // Longer than it needs to be for the pull-back alone: the dwell eats the
-        // first third, so this keeps the reveal itself as unhurried as before.
-        const scrollLen = narrow ? 2000 : 2600;
+        // The dwell eats the first ~38%, so this is sized to leave the pull-back
+        // itself as much scroll as it had before the dwell existed.
+        const scrollLen = narrow ? 1800 : 2400;
 
         // Measured fresh on every refresh (mount, resize, orientation change)
         // so the landing is exact at any size rather than baked in at mount.
@@ -144,9 +140,8 @@ export default function DocumentalStage({ video, note, count }) {
         );
         tl.fromTo(copy, { opacity: 1 }, { opacity: 0, ease: 'none', duration: 0.18 }, 'dwellEnd');
 
-        // Phase 5 — hand off to the next category.
-        tl.addLabel('blurStart', BLUR_FROM);
-        tl.to(inner, { filter: 'blur(14px)', opacity: 0, ease: 'none', duration: 1 - BLUR_FROM }, 'blurStart');
+        // Nothing follows the landing: the pin releases just after it and the
+        // whole composition scrolls away opaque, like any other section.
 
         measure();
         ScrollTrigger.refresh();
@@ -162,46 +157,44 @@ export default function DocumentalStage({ video, note, count }) {
       className="documental-stage"
       style={{ position: 'relative', height: '100svh', overflow: 'hidden', background: '#08080A' }}
     >
-      <div ref={innerRef} className="documental-inner" style={{ position: 'absolute', inset: 0, overflow: 'hidden', willChange: 'opacity, filter' }}>
-        <div ref={frameRef} className="documental-frame">
-          {/* The artwork's screen is a real alpha cut-out, so anything not
-              covered by the video would show whatever sits behind it. Back it
-              with the same solid the cards use, so a sliver left by a future
-              OVERSCAN or aspect change reads as black rather than see-through. */}
-          <div style={{ position: 'absolute', inset: 0, background: '#0E0E10' }} />
-          <img
-            ref={bgRef}
-            className="documental-bg"
-            src="/assets/documentales-bg.png"
-            alt=""
-            aria-hidden="true"
-            decoding="async"
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', willChange: 'transform, filter' }}
+      <div ref={frameRef} className="documental-frame">
+        {/* The artwork's screen is a real alpha cut-out, so anything not
+            covered by the video would show whatever sits behind it. Back it
+            with the same solid the cards use, so a sliver left by a future
+            OVERSCAN or aspect change reads as black rather than see-through. */}
+        <div style={{ position: 'absolute', inset: 0, background: '#0E0E10' }} />
+        <img
+          ref={bgRef}
+          className="documental-bg"
+          src="/assets/documentales-bg.png"
+          alt=""
+          aria-hidden="true"
+          decoding="async"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', willChange: 'transform, filter' }}
+        />
+        <div
+          ref={mediaRef}
+          className="documental-media"
+          style={{
+            position: 'absolute',
+            left: `${MEDIA_BOX.left}%`,
+            top: `${MEDIA_BOX.top}%`,
+            width: `${MEDIA_BOX.width}%`,
+            height: `${MEDIA_BOX.height}%`,
+            transformOrigin: 'center center',
+            willChange: 'transform',
+            pointerEvents: 'none'
+          }}
+        >
+          <VideoCard
+            video={video}
+            reveal={false}
+            radius={4}
+            frameInset={6}
+            frameRadius={2}
+            forcePreview={() => forcePreviewRef.current}
+            style={{ width: '100%', height: '100%', aspectRatio: 'auto', border: 'none' }}
           />
-          <div
-            ref={mediaRef}
-            className="documental-media"
-            style={{
-              position: 'absolute',
-              left: `${MEDIA_BOX.left}%`,
-              top: `${MEDIA_BOX.top}%`,
-              width: `${MEDIA_BOX.width}%`,
-              height: `${MEDIA_BOX.height}%`,
-              transformOrigin: 'center center',
-              willChange: 'transform',
-              pointerEvents: 'none'
-            }}
-          >
-            <VideoCard
-              video={video}
-              reveal={false}
-              radius={4}
-              frameInset={6}
-              frameRadius={2}
-              forcePreview={() => forcePreviewRef.current}
-              style={{ width: '100%', height: '100%', aspectRatio: 'auto', border: 'none' }}
-            />
-          </div>
         </div>
       </div>
 
