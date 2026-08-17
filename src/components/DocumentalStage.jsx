@@ -100,6 +100,9 @@ export default function DocumentalStage({ video, note, count }) {
             pin: true,
             scrub: true,
             invalidateOnRefresh: true,
+            // Must measure after the reel pin above it (refreshPriority 1), whose
+            // spacer sits between the top of the page and this stage.
+            refreshPriority: 0,
             onRefreshInit: measure,
             onToggle: (self) => {
               forcePreviewRef.current = self.isActive;

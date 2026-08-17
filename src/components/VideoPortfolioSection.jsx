@@ -28,7 +28,14 @@ export default function VideoPortfolioSection() {
         ease: 'none',
         scrollTrigger: {
           trigger: wrap, start: 'top top', end: () => `+=${dist() + 300}`,
-          pin: true, scrub: 0.7, invalidateOnRefresh: true, anticipatePin: 1
+          pin: true, scrub: 0.7, invalidateOnRefresh: true, anticipatePin: 1,
+          // This pin adds ~2.8k px of spacer above the Documental stage further
+          // down the same section. On refresh ScrollTrigger reverts every pin,
+          // measures, then re-applies — so whichever trigger measures first sees
+          // the page without the other's spacer. Refreshing this one first (higher
+          // priority wins) means the stage below always measures against a page
+          // that already includes this spacer.
+          refreshPriority: 1
         }
       });
       trig = tween.scrollTrigger;
